@@ -11,7 +11,7 @@ namespace Skiing_Amongst_Trees
         private int numberRows;
         private int numberColumns;
 
-        public DataNode (char[,] array, int r, int c)
+        public DataNode(char[,] array, int r, int c)
         {
             dataArray = array;
             numberRows = r;
@@ -57,18 +57,13 @@ namespace Skiing_Amongst_Trees
     {
         static void Main(string[] args)
         {
-            //var filename = "TreeMap.txt";
-            //open the file
-            var fileAccessor = new StreamReader(File.OpenRead("TreeMap.txt"));
-        //C: \Users\rache\Documents\Spring 2021\IntroSE\Skiing\Skiing_Amongst_Trees\TreeMap.txt
             Console.WriteLine("Hello World!");
             //Read from file into our dataMap array
-            var dataMap = readIntoArray(fileAccessor, "TreeMap.txt");
+            var dataMap = readIntoArray(@"C:\Users\rache\Documents\Spring 2021\IntroSE\Skiing\Skiing_Amongst_Trees\TreeMap.txt");
 
-            
 
             int run = 3;
-            int rise = 1;
+            int rise = 2;
 
             // call the ski function passing in the slope (over (run) 3 down (rise) 1 and the DataMap
             hitMiss hmcount = ski(dataMap, run, rise);
@@ -78,17 +73,15 @@ namespace Skiing_Amongst_Trees
 
         }
 
-        public static DataNode readIntoArray(StreamReader fileAccessor, string filename)
+        public static DataNode readIntoArray(string filename)
         {
             //Open the file 
-            //var fileAccessor = new StreamReader(File.OpenRead(filename));
+            var fileAccessor = new StreamReader(File.OpenRead(filename));
 
             //Count the number of columns in our file
             var line1 = fileAccessor.ReadLine();
-            var numCols = 0;
-            foreach (char ch in line1) {
-                numCols++;
-            }
+            var numCols = line1.Length;
+            
 
             //Count how many rows are in our file
             int numRows = 1;
@@ -105,29 +98,28 @@ namespace Skiing_Amongst_Trees
             //Read the file into our array.
             fileAccessor.Close();
             fileAccessor = new StreamReader(File.OpenRead(filename));
-            int row = 0;
-           
-            for(int r = 0; r < numRows; r++)
+
+            for (int r = 0; r < numRows; r++)
             {
                 var line = fileAccessor.ReadLine();
                 //var charArrayLine = line.ToCharArray();
                 for (int c = 0; c < numCols; c++)
                 {
-                    treeMap[row, c] = line[c];
+                    treeMap[r, c] = line[c];
                 }
             }
 
             //close the file
             fileAccessor.Close();
 
-           
+
             //return our array
             return new DataNode(treeMap, numRows, numCols);
         }
 
 
-          /* ski accepts the data node, run, and rise to calculate how many times the skiier hits a tree */
-          public static hitMiss ski(DataNode dnode, int over, int down)
+        /* ski accepts the data node, run, and rise to calculate how many times the skiier hits a tree */
+        public static hitMiss ski(DataNode dnode, int over, int down)
         {
             int hits = 0;
             var miss = 0;
@@ -137,12 +129,12 @@ namespace Skiing_Amongst_Trees
             char[,] data = dnode.getDataArray();
             var hitMissCounts = new hitMiss(0, 0); // to count our number of hits and misses
 
-            for (int rowPosition = 0; rowPosition < numRows; rowPosition += down)
+            for (int rowPosition = 0; rowPosition < numRows; rowPosition += down, colPosition += over)
             {
-                colPosition += over;
                 
+
                 //did we hit a tree?
-                if(data[rowPosition,(colPosition % numCols)] == '#')
+                if (data[rowPosition, (colPosition % numCols)] == '#')
                 {
                     hitMissCounts.updateHits(1);
                 }
@@ -151,8 +143,10 @@ namespace Skiing_Amongst_Trees
                     hitMissCounts.updateMiss(1);
                 }
 
-            }
                 
+
+            }
+
             return hitMissCounts;
         }
     }
