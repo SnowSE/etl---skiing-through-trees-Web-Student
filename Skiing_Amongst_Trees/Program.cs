@@ -57,10 +57,15 @@ namespace Skiing_Amongst_Trees
     {
         static void Main(string[] args)
         {
+            //var filename = "TreeMap.txt";
+            //open the file
+            var fileAccessor = new StreamReader(File.OpenRead("TreeMap.txt"));
+        //C: \Users\rache\Documents\Spring 2021\IntroSE\Skiing\Skiing_Amongst_Trees\TreeMap.txt
             Console.WriteLine("Hello World!");
             //Read from file into our dataMap array
-            var dataMap = readIntoArray("TreeMap.txt");
-             
+            var dataMap = readIntoArray(fileAccessor, "TreeMap.txt");
+
+            
 
             int run = 3;
             int rise = 1;
@@ -73,10 +78,10 @@ namespace Skiing_Amongst_Trees
 
         }
 
-        public static DataNode readIntoArray(string filename)
+        public static DataNode readIntoArray(StreamReader fileAccessor, string filename)
         {
             //Open the file 
-            var fileAccessor = new StreamReader(File.OpenRead(filename));
+            //var fileAccessor = new StreamReader(File.OpenRead(filename));
 
             //Count the number of columns in our file
             var line1 = fileAccessor.ReadLine();
